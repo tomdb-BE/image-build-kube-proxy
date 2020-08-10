@@ -1,4 +1,4 @@
-# ranchertest/kube-proxy
+# rancher/kube-proxy
 
 ## Build
 
