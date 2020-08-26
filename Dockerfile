@@ -21,8 +21,9 @@ RUN cd /go/kubernetes                  && \
     make kube-proxy
 
 FROM ubi
-RUN microdnf update -y        && \
-    microdnf install -y which && \ 
+RUN microdnf update -y     && \
+    microdnf install -y which \
+    conntrack-tools        && \ 
     rm -rf /var/cache/yum
 
 COPY --from=builder /tmp/xtables/bin/* /usr/sbin/
