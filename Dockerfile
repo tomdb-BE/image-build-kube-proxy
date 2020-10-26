@@ -17,11 +17,17 @@ RUN tar xvf /opt/xtables/k3s-root-xtables.tar -C /opt/xtables
 ARG TAG="v1.18.8"
 ARG PKG="github.com/kubernetes/kubernetes"
 ARG SRC="github.com/kubernetes/kubernetes"
+ARG MAJOR
+ARG MINOR
 RUN git clone --depth=1 https://${SRC}.git $GOPATH/src/${PKG}
 WORKDIR $GOPATH/src/${PKG}
 RUN git fetch --all --tags --prune
 RUN git checkout tags/${TAG} -b ${TAG}
 RUN GO_LDFLAGS="-linkmode=external \
+    -X k8s.io/client-go/pkg/version.gitMajor=${MAJOR} \
+    -X k8s.io/client-go/pkg/version.gitMinor=${MINOR} \
+    -X k8s.io/component-base/version.gitMajor=${MAJOR} \
+    -X k8s.io/component-base/version.gitMinor=${MINOR} \
     -X k8s.io/component-base/version.gitVersion=${TAG} \
     -X k8s.io/component-base/version.gitCommit=$(git rev-parse HEAD) \
     -X k8s.io/component-base/version.gitTreeState=clean \
