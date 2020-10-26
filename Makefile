@@ -20,8 +20,8 @@ image-build:
 		--build-arg PKG=$(PKG) \
 		--build-arg SRC=$(SRC) \
 		--build-arg TAG=$(TAG) \
-		--build-arg MAJOR=$(shell ./scipts/version.sh ${TAG} major) \
-		--build-arg MINOR=$(shell ./scipts/version.sh ${TAG} minor) \
+		--build-arg MAJOR=$(shell ./scripts/version.sh ${TAG} major) \
+		--build-arg MINOR=$(shell ./scripts/version.sh ${TAG} minor) \
 		--tag $(ORG)/hardened-kube-proxy:$(TAG) \
 		--tag $(ORG)/hardened-kube-proxy:$(TAG)-$(ARCH) \
 	.
