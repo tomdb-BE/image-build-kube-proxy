@@ -8,7 +8,7 @@ if [ -z $1 ]; then
 fi
 
 if [ -z $2 ]; then
-    echo "error: tag required as argument"
+    echo "error: version required as argument"
     exit 1
 fi
 
