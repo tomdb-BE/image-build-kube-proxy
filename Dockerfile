@@ -44,6 +44,6 @@ RUN microdnf update -y     && \
     microdnf install -y which \
     conntrack-tools        && \ 
     rm -rf /var/cache/yum
-COPY --from=builder /opt/xtables/bin/* /usr/sbin/
+COPY --from=builder /opt/xtables/bin/ /usr/sbin/
 COPY --from=builder /usr/local/bin/ /usr/local/bin/
 
