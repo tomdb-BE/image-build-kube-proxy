@@ -4,22 +4,28 @@ ifeq ($(ARCH),)
 ARCH=$(shell go env GOARCH)
 endif
 
+BUILD_META=-build$(shell date +%Y%m%d)
 ORG ?= rancher
 PKG ?= github.com/kubernetes/kubernetes
 SRC ?= github.com/kubernetes/kubernetes
-TAG ?= v1.18.8
+TAG ?= v1.18.8$(BUILD_META)
 
 ifneq ($(DRONE_TAG),)
 TAG := $(DRONE_TAG)
 endif
 
+ifeq (,$(filter %$(BUILD_META),$(TAG)))
+$(error TAG needs to end with build metadata: $(BUILD_META))
+endif
+
 .PHONY: image-build
 image-build:
 	docker build \
+		--pull \
 		--build-arg ARCH=$(ARCH) \
 		--build-arg PKG=$(PKG) \
 		--build-arg SRC=$(SRC) \
-		--build-arg TAG=$(TAG) \
+		--build-arg TAG=$(TAG:$(BUILD_META)=) \
 		--build-arg MAJOR=$(shell ./scripts/semver-parse.sh ${TAG} major) \
 		--build-arg MINOR=$(shell ./scripts/semver-parse.sh ${TAG} minor) \
 		--tag $(ORG)/hardened-kube-proxy:$(TAG) \
