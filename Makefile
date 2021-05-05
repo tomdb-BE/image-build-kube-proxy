@@ -5,6 +5,7 @@ ARCH=$(shell go env GOARCH)
 endif
 
 BUILD_META=-build$(shell date +%Y%m%d)
+BUILD_META=-build20210413
 ORG ?= rancher
 PKG ?= github.com/kubernetes/kubernetes
 SRC ?= github.com/kubernetes/kubernetes
@@ -21,7 +22,6 @@ endif
 .PHONY: image-build
 image-build:
 	docker build \
-		--pull \
 		--build-arg ARCH=$(ARCH) \
 		--build-arg PKG=$(PKG) \
 		--build-arg SRC=$(SRC) \

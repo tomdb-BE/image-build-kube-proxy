@@ -1,4 +1,4 @@
-ARG UBI_IMAGE=registry.access.redhat.com/ubi7/ubi-minimal:latest
+ARG UBI_IMAGE=centos:7
 ARG GO_IMAGE=rancher/hardened-build-base:v1.15.8b5
 FROM ${UBI_IMAGE} as ubi
 FROM ${GO_IMAGE} as builder
@@ -36,14 +36,13 @@ RUN GO_LDFLAGS="-linkmode=external \
     -X k8s.io/component-base/version.buildDate=$(date -u +%Y-%m-%dT%H:%M:%SZ) \
     " go-build-static.sh -mod=vendor -gcflags=-trimpath=${GOPATH}/src -o bin/kube-proxy ./cmd/kube-proxy
 RUN go-assert-static.sh bin/*
-RUN go-assert-boring.sh bin/*
 # install (with strip) to /usr/local/bin
 RUN install -s bin/* /usr/local/bin
 RUN kube-proxy --version
 
 FROM ubi
-RUN microdnf update -y     && \
-    microdnf install -y which \
+RUN yum update -y     && \
+    yum install -y which \
     conntrack-tools        && \ 
     rm -rf /var/cache/yum
 COPY --from=builder /opt/k3s-root/aux/ /usr/sbin/
