@@ -8,7 +8,7 @@ BUILD_META ?= -build$(shell date +%Y%m%d)
 ORG ?= rancher
 PKG ?= github.com/kubernetes/kubernetes
 SRC ?= github.com/kubernetes/kubernetes
-TAG ?= v1.21.4$(BUILD_META)
+TAG ?= v1.21.4-multiarch$(BUILD_META)
 GOLANG_VERSION ?= v1.16.6b7
 UBI_IMAGE ?= centos:7
 
