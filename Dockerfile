@@ -1,4 +1,4 @@
-ARG UBI_IMAGE=registry.access.redhat.com/ubi7/ubi-minimal:latest
+ARG UBI_IMAGE=centos:7
 ARG GO_IMAGE=rancher/hardened-build-base:v1.16.6b7
 FROM ${UBI_IMAGE} as ubi
 FROM ${GO_IMAGE} as builder
@@ -9,6 +9,7 @@ RUN set -x \
     gcc \
     tar \
     git \
+    binutils-gold \
     make
 # setup the build
 ARG ARCH="amd64"
@@ -42,8 +43,8 @@ RUN install -s bin/* /usr/local/bin
 RUN kube-proxy --version
 
 FROM ubi
-RUN microdnf update -y     && \
-    microdnf install -y which \
+RUN yum update -y          && \
+    yum install -y which      \
     conntrack-tools        && \ 
     rm -rf /var/cache/yum
 COPY --from=builder /opt/k3s-root/aux/ /usr/sbin/
