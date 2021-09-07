@@ -9,6 +9,8 @@ ORG ?= rancher
 PKG ?= github.com/kubernetes/kubernetes
 SRC ?= github.com/kubernetes/kubernetes
 TAG ?= v1.21.4$(BUILD_META)
+GOLANG_VERSION ?= v1.16.6b7
+UBI_IMAGE ?= centos:7
 
 .PHONY: image-build
 image-build:
@@ -20,6 +22,8 @@ image-build:
 		--build-arg TAG=$(TAG:$(BUILD_META)=) \
 		--build-arg MAJOR=$(shell ./scripts/semver-parse.sh ${TAG} major) \
 		--build-arg MINOR=$(shell ./scripts/semver-parse.sh ${TAG} minor) \
+                --build-arg GO_IMAGE=$(ORG)/hardened-build-base:$(GOLANG_VERSION)-multiarch \
+                --build-arg UBI_IMAGE=$(UBI_IMAGE) \
 		--tag $(ORG)/hardened-kube-proxy:$(TAG) \
 		--tag $(ORG)/hardened-kube-proxy:$(TAG)-$(ARCH) \
 	.
