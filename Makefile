@@ -19,7 +19,7 @@ image-build:
 		--build-arg PKG=$(PKG) \
 		--build-arg SRC=$(SRC) \
 		--build-arg ARCH=$(ARCH) \
-		--build-arg TAG=$(TAG:$(BUILD_META)=) \
+		--build-arg TAG=$(TAG:multiarch-$(BUILD_META)=) \
 		--build-arg MAJOR=$(shell ./scripts/semver-parse.sh ${TAG} major) \
 		--build-arg MINOR=$(shell ./scripts/semver-parse.sh ${TAG} minor) \
                 --build-arg GO_IMAGE=$(ORG)/hardened-build-base:$(GOLANG_VERSION)-multiarch \
