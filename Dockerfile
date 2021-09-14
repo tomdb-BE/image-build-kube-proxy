@@ -43,8 +43,7 @@ RUN install -s bin/* /usr/local/bin
 RUN kube-proxy --version
 
 FROM ubi
-RUN yum update -y          && \
-    yum install -y which      \
+RUN yum install -y which      \
     conntrack-tools        && \ 
     rm -rf /var/cache/yum
 COPY --from=builder /opt/k3s-root/aux/ /usr/sbin/
